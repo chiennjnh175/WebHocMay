@@ -1,0 +1,18 @@
+{
+  "appearance": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Script ran on page and returned:\n```json\n{\"viewport\":\"1440x900\",\"color\":\"rgb(231, 237, 243)\",\"image\":\"none\",\"dots\":false,\"csvLink\":false,\"menus\":4,\"metadata\":false,\"overflow\":false}\n```"
+      }
+    ]
+  },
+  "interactions": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Script ran on page and returned:\n```json\n{\"checks\":[{\"id\":\"history-metric\",\"open\":true,\"value\":\"cls\",\"label\":\"Classification loss\",\"closed\":true,\"focused\":true},{\"id\":\"matrix-mode\",\"open\":true,\"value\":\"confusion_matrix.png\",\"label\":\"Số lượng\",\"closed\":true,\"focused\":true},{\"id\":\"curve-mode\",\"open\":true,\"value\":\"BoxF1_curve.png\",\"label\":\"F1–Confidence\",\"closed\":true,\"focused\":true},{\"id\":\"distribution-split\",\"open\":true,\"value\":\"1\",\"label\":\"Validation\",\"closed\":true,\"focused\":true}],\"keyboard\":{\"value\":\"pr\",\"legend\":\"Precision\\nRecall\"},\"escape\":true,\"outside\":true,\"singleMenu\":1,\"metadataRemoved\":true,\"total\":\"Tổng số ảnh\\n13.000\\nNhãn gán\\n87.765\",\"overflow\":false}\n```"
+      }
+    ]
+  }
+}

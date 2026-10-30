@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Script ran on page and returned:\n```json\n{\"viewport\":\"390x844\",\"open\":{\"expanded\":\"true\",\"withinViewport\":true},\"value\":\"map\",\"closed\":true,\"legend\":\"mAP@50\\nmAP@50–95\",\"overflow\":false,\"color\":\"rgb(231, 237, 243)\"}\n```"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+/* Liquid glass surface adapted from the user's supplied template. */
+:root {
+  --dropdown-glass-frost: .82;
+  --dropdown-glass-saturation: 1.2;
+  --dropdown-glass-filter: url(#dropdown-glass-filter);
+}
+.glass-surface__filter { position: fixed; inset: 0; width: 0; height: 0; opacity: 0; pointer-events: none; }
+.glass-dropdown { position: relative; flex-shrink: 0; max-width: 100%; }
+.glass-dropdown-trigger.liquidglass, .glass-dropdown-menu.liquidglass {
+  background: hsl(0 0% 100% / var(--dropdown-glass-frost));
+  -webkit-backdrop-filter: var(--dropdown-glass-filter) saturate(var(--dropdown-glass-saturation));
+  backdrop-filter: var(--dropdown-glass-filter) saturate(var(--dropdown-glass-saturation));
+  box-shadow: inset 0 0 2px 1px #ffffffb3, inset 0 0 10px 4px #ffffff66, 0 2px 8px #263c580a;
+}
+.glass-dropdown-trigger {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  position: relative;
+  min-width: 144px;
+  max-width: 100%;
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid #ffffffb3;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 12px;
+  color: #414d5e;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.glass-dropdown-trigger::after { content: none; }
+.glass-dropdown-trigger:hover { transform: none; background-color: #fffffff0; }
+.glass-dropdown-trigger:focus-visible { outline: 2px solid #687b93; outline-offset: 3px; }
+.glass-dropdown-trigger[aria-expanded="true"] { border-color: #ffffffef; }
+.glass-dropdown-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.glass-dropdown-arrow { width: 7px; height: 7px; flex: 0 0 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .18s ease; }
+.glass-dropdown-trigger[aria-expanded="true"] .glass-dropdown-arrow { transform: translateY(2px) rotate(225deg); }
+.glass-dropdown-menu {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 6px;
+  border: 1px solid #ffffffb3;
+  border-radius: 20px;
+  color: #323f50;
+  font: 12px Inter, "Segoe UI", sans-serif;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  z-index: 1000;
+}
+.glass-dropdown-menu::backdrop { background: transparent; pointer-events: none; }
+.glass-dropdown-option { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 42px; padding: 10px 12px; border-radius: 14px; cursor: pointer; }
+.glass-dropdown-option.is-active { background: #ffffff8c; box-shadow: inset 0 0 0 1px #ffffff70; }
+.glass-dropdown-option[aria-selected="true"] { color: #245b96; }
+.glass-dropdown-option[aria-disabled="true"] { opacity: .4; cursor: default; }
+.glass-dropdown-check { min-width: 14px; font-size: 14px; }
+@supports not (backdrop-filter: url(#dropdown-glass-filter)) {
+  .glass-dropdown-trigger.liquidglass, .glass-dropdown-menu.liquidglass { background: #f0f3f7d9; -webkit-backdrop-filter: blur(14px) saturate(1.2); backdrop-filter: blur(14px) saturate(1.2); }
+}
+@media (max-width: 700px) { .glass-dropdown-trigger { min-height: 44px; max-width: min(240px, calc(100vw - 70px)); } .glass-dropdown-option { min-height: 44px; } }
+@media (prefers-reduced-motion: reduce) { .glass-dropdown-arrow { transition: none; } }

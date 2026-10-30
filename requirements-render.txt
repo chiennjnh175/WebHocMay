@@ -1,0 +1,10 @@
+# Linux cloud runtime, without OpenCV GUI dependencies.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.5.1+cpu
+torchvision==0.20.1+cpu
+ultralytics-opencv-headless==8.4.165
+fastapi==0.162.0
+uvicorn==0.54.0
+python-multipart==0.0.32
+imageio-ffmpeg==0.7.0
+Pillow>=10.4.0,<13.0

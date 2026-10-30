@@ -1,0 +1,24 @@
+# Repository root must contain the contents of src.
+services:
+  - type: web
+    name: yolo-class-demo
+    runtime: python
+    plan: free
+    buildCommand: pip install --no-cache-dir -r requirements-render.txt
+    startCommand: python run.py
+    healthCheckPath: /health
+    envVars:
+      - key: DEVICE
+        value: cpu
+      - key: MAX_UPLOAD_MB
+        value: "30"
+      - key: MAX_VIDEO_SECONDS
+        value: "30"
+      - key: RESULT_TTL_SECONDS
+        value: "600"
+      - key: OMP_NUM_THREADS
+        value: "1"
+      - key: MKL_NUM_THREADS
+        value: "1"
+      - key: YOLO_CONFIG_DIR
+        value: /tmp/yolo-config

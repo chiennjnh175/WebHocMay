@@ -1,0 +1,53 @@
+{
+  "contract": "Use a plain cool gray-blue background (#e7edf3) without images or dotted SVGs. Preserve the user's glass buttons and slider. Enhance all four evaluation selects with the supplied liquid-glass surface and an accessible popover list, preserving native select values/change handlers. Hide run/checkpoint/epoch/config/dataset identifiers and CSV download controls from the interface, while keeping model metrics, real dataset totals and chart data unchanged. Verify desktop 1440x900 and mobile 390x844.",
+  "targetViewports": [
+    "1440x900",
+    "390x844"
+  ],
+  "accessibility": {
+    "status": "pass",
+    "evidence": "Browser interaction checks exercised all four menus by pointer and checked selected labels, values and focus return. ArrowDown/End/Enter changed the history plot; Escape and outside-pointer dismissal closed lists; only one list remained open. Combobox/listbox/option roles, aria-expanded/selected/activedescendant and native select fallback are implemented. This is a scoped UI check, not a full WCAG audit."
+  },
+  "responsive": {
+    "status": "pass",
+    "evidence": "Rendered DOM checks at 1440x900 and 390x844 found no page overflow. At 390x844 the open menu stayed within viewport bounds, selecting mAP updated the chart and closed the list. Popup position adapts to available vertical space. The supplied frosted surface was visually inspected in a captured menu image."
+  },
+  "contentStates": {
+    "loading": {
+      "status": "pass",
+      "evidence": "Existing gated report-fetch check in states.json verified loading status and content visibility; menu enhancement does not change report loading."
+    },
+    "empty": {
+      "status": "not-applicable",
+      "reason": "The report is a fixed prepackaged dataset with populated select options; missing reports use error/retry, missing assets use partial-data placeholders."
+    },
+    "error": {
+      "status": "pass",
+      "evidence": "Existing injected HTTP 503/retry check in states.json passes. The malformed embedded bitmap in the supplied template was replaced with a valid inline SVG displacement map. Final browser console had no errors or warnings."
+    },
+    "partial": {
+      "status": "pass",
+      "evidence": "Existing missing-asset and missing-count checks in states.json retained report metric tiles with unavailable-data placeholders."
+    },
+    "success": {
+      "status": "pass",
+      "evidence": "Desktop and mobile checks confirm solid rgb(231,237,243) background, backgroundImage none, no dotted SVG, no CSV link or removed metadata, and four enhanced menus. Dataset totals remain 13,000 images and 87,765 instances."
+    },
+    "permission": {
+      "status": "not-applicable",
+      "reason": "The final UI uses only same-origin static assets and a plain CSS background. No image access, device permissions or external connections are needed at runtime."
+    }
+  },
+  "renderedEvidence": [
+    {
+      "viewport": "1440x900",
+      "artifact": "desktop-dropdown.json",
+      "observation": "Live desktop DOM/style and dropdown pointer/keyboard checks for the final solid background and hidden metadata."
+    },
+    {
+      "viewport": "390x844",
+      "artifact": "mobile-dropdown.json",
+      "observation": "Live mobile DOM/layout check including opening, viewport containment, selection and dismissal of the glass dropdown."
+    }
+  ]
+}

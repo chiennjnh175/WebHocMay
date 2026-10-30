@@ -1,0 +1,26 @@
+{
+  "loading": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Script ran on page and returned:\n```json\n{\"loading\":true,\"contentHidden\":true,\"loaded\":true}\n```"
+      }
+    ]
+  },
+  "error": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Script ran on page and returned:\n```json\n{\"error\":\"Không tải được báo cáo. Thử lại\",\"contentHidden\":true,\"retrySucceeded\":true}\n```"
+      }
+    ]
+  },
+  "partial": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Script ran on page and returned:\n```json\n{\"reportVisible\":true,\"matrix\":\"Chưa có dữ liệu\",\"distribution\":\"Chưa có dữ liệu\",\"metricTiles\":4}\n```"
+      }
+    ]
+  }
+}

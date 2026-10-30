@@ -1,0 +1,4 @@
+:root { --page-background-image: none; }
+body { background-color: #e7edf3; }
+.grid { display: none; }
+.glass-dropdown-menu.liquidglass { background: #f8fbfdd9; }

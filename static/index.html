@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f1f2f4">
+  <title>YOLOv8m</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/buttons.css">
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="stylesheet" href="/static/dropdowns.css">
+  <link rel="stylesheet" href="/static/background.css">
+  <script src="/static/app.js" type="module"></script>
+  <script src="/static/evaluation.js" type="module"></script>
+</head>
+<body>
+  <main>
+    <nav class="page-tabs" role="tablist" aria-label="Nội dung">
+      <div class="button-wrap"><button id="test-tab" role="tab" aria-selected="true" aria-controls="test-view"><span>Kiểm thử</span></button><div class="button-shadow"></div></div>
+      <div class="button-wrap"><button id="comparison-tab" role="tab" aria-selected="false" aria-controls="comparison-view" tabindex="-1"><span>Tổng quan</span></button><div class="button-shadow"></div></div>
+    </nav>
+    <section id="test-view" class="test-view" role="tabpanel" aria-labelledby="test-tab">
+    <div class="workspace" id="workspace">
+      <section class="media-panel" aria-label="Bản gốc" id="original-panel">
+        <svg class="empty-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect x="7" y="7" width="26" height="26" rx="7"/><circle cx="15" cy="15" r="2"/><path d="m8 29 9-9 6 6 4-4 6 6"/></svg>
+      </section>
+      <section class="media-panel" aria-label="Kết quả phát hiện" id="result-panel">
+        <svg class="empty-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M15 8H8v7m17-7h7v7M8 25v7h7m17-7v7h-7"/><rect x="15" y="15" width="10" height="10" rx="2"/></svg>
+        <div class="loading" id="loading" hidden><svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16"/></svg><output id="job-progress">0%</output></div>
+      </section>
+    </div>
+    <div class="toolbar">
+      <div class="model-select"><select id="model-select" aria-label="Mô hình phát hiện"><option value="yolov8m">YOLOv8m</option><option value="yolo11n">YOLO11n</option><option value="yolo26n">YOLO26n</option></select></div>
+      <input type="file" id="file" accept=".jpg,.jpeg,.png,.webp,.bmp,.mp4,.mov,.avi,.mkv,.webm,.m4v" hidden>
+      <div class="button-wrap"><button id="choose" type="button"><span>Chọn file</span></button><div class="button-shadow"></div></div>
+      <div class="confidence-control">
+        <div class="slider-container" id="slider">
+          <div class="slider-progress" id="progress"></div>
+          <div class="slider-thumb-glass" id="thumb"><div class="slider-thumb-glass-filter"></div><div class="slider-thumb-glass-overlay"></div><div class="slider-thumb-glass-specular"></div></div>
+          <input id="confidence" type="range" min="1" max="100" value="30" aria-label="Ngưỡng tin cậy">
+        </div>
+        <div class="confidence-value"><label for="confidence-number">Conf</label><input id="confidence-number" type="number" min="0.01" max="1" step="0.01" value="0.30" inputmode="decimal"></div>
+      </div>
+      <div class="button-wrap"><button id="generate" type="button" disabled><span>Phát hiện</span></button><div class="button-shadow"></div></div>
+      <div class="button-wrap"><button id="download" type="button" disabled aria-label="Tải kết quả"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 16v4h14v-4"/></svg></span></button><div class="button-shadow"></div></div>
+    </div>
+    <p id="error" role="alert" hidden></p>
+    </section>
+    <section id="comparison-view" role="tabpanel" aria-labelledby="comparison-tab" hidden>
+      <p id="comparison-status" role="status" hidden></p>
+      <div id="comparison-content" hidden>
+<article class="report-panel">
+          <header class="panel-heading"><h2>Dữ liệu</h2></header>
+          <dl id="dataset-totals" class="dataset-totals"></dl>
+          <p class="muted">Ảnh / đối tượng</p>
+          <div id="dataset-splits" class="dataset-splits"></div>
+          <header class="panel-heading distribution-heading"><h3>Phân bố đối tượng</h3><select id="distribution-split" aria-label="Tập dữ liệu"><option value="0">Train</option><option value="1">Validation</option><option value="2">Test</option></select></header>
+          <div id="class-distribution" class="class-distribution"></div>
+        </article>
+        <div class="comparison-models" id="comparison-models"></div>
+        <p class="comparison-protocol">Validation</p>
+        <article class="report-panel comparison-table-panel"><div class="comparison-table-scroll"><table class="comparison-table"><thead><tr><th>Chỉ số</th><th>YOLOv8m</th><th>YOLO11n</th><th>Chênh lệch 11 − 8</th></tr></thead><tbody id="comparison-values"></tbody></table></div></article>
+        <article class="report-panel"><header class="panel-heading"><h2>Chỉ số đánh giá</h2></header><div id="comparison-bars"></div></article>
+        <article class="report-panel"><header class="panel-heading"><h2>Đường cong học</h2><select id="comparison-history" aria-label="Chỉ số đường cong học"><option value="map5095">mAP@50–95</option><option value="map50">mAP@50</option><option value="precision">Precision</option><option value="recall">Recall</option></select></header><div id="comparison-history-chart"></div></article>
+        <article class="report-panel"><header class="panel-heading"><h2>Biểu đồ validation</h2><select id="comparison-figure" aria-label="Biểu đồ so sánh"><option value="BoxPR_curve.png">Precision–Recall</option><option value="BoxF1_curve.png">F1–Confidence</option><option value="BoxP_curve.png">Precision–Confidence</option><option value="BoxR_curve.png">Recall–Confidence</option><option value="confusion_matrix.png">Ma trận số lượng</option><option value="confusion_matrix_normalized.png">Ma trận nhầm lẫn</option><option value="results.png">Tổng quan huấn luyện</option></select></header><div class="comparison-figures" id="comparison-figures"></div></article>
+      </div>
+    </section>
+  </main>
+  <dialog id="figure-dialog" aria-label="Biểu đồ phóng to"><div class="dialog-toolbar"><p id="figure-name"></p><div class="button-wrap"><button id="close-figure" aria-label="Đóng"><span>×</span></button><div class="button-shadow"></div></div></div><img id="expanded-figure" alt=""></dialog>
+<svg aria-hidden="true" width="0" height="0" class="glass-surface__filter" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="dropdown-glass-filter" color-interpolation-filters="sRGB" x="0%" y="0%" width="100%" height="100%">
+       <feImage
+  x="0"
+  y="0"
+  width="100%"
+  height="100%"
+  preserveAspectRatio="none"
+  result="map"
+  href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22200%22%3E%3Cdefs%3E%3CradialGradient%20id%3D%22lens%22%20cx%3D%2250%25%22%20cy%3D%2250%25%22%20r%3D%2270%25%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22rgb(128%2C128%2C128)%22%2F%3E%3Cstop%20offset%3D%2265%25%22%20stop-color%3D%22rgb(128%2C128%2C128)%22%2F%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22rgb(180%2C180%2C128)%22%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22url(%23lens)%22%2F%3E%3C%2Fsvg%3E"
+/>
+
+        <feDisplacementMap in="SourceGraphic" in2="map" id="redchannel" result="dispRed" scale="-20" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+        <feColorMatrix in="dispRed" type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0" result="red"></feColorMatrix>
+        <feDisplacementMap in="SourceGraphic" in2="map" id="greenchannel" result="dispGreen" scale="-24" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+        <feColorMatrix in="dispGreen" type="matrix" values="0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0" result="green"></feColorMatrix>
+        <feDisplacementMap in="SourceGraphic" in2="map" id="bluechannel" result="dispBlue" scale="-28" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+        <feColorMatrix in="dispBlue" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0" result="blue"></feColorMatrix>
+        <feBlend in="red" in2="green" mode="screen" result="rg"></feBlend>
+        <feBlend in="rg" in2="blue" mode="screen" result="output"></feBlend>
+        <feGaussianBlur in="output" stdDeviation="3"></feGaussianBlur>
+      </filter>
+    </defs>
+  </svg>
+</body>
+</html>
